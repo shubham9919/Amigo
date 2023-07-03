@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Amigo</title>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+
+    <script crossorigin="anonymous" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+    <link href="{{ url_for('static', filename='stylesheets/style.css') }}" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+        
+        {% if uploaded_files  %}
+            {% if uploaded_file_name  %}
+                <h2>Uploaded Files:</h2>
+                    <ul>
+                        {% for file in uploaded_files %}
+                            <li>{{uploaded_file_name[loop.index - 1]}} :  {{ file }}</li>
+                        {% endfor %}
+                    </ul>
+            {% endif %}
+        {% endif %}
+    
+        {% if upload_more %}
+        <h2>Upload More Files:</h2>
+        {% else %}
+        <h2>Upload Files:</h2>
+        {% endif %}
+        
+        <form method="POST" action="/handle_file_upload" enctype="multipart/form-data">
+            <select name="file_type" class="form-control" id="exampleFormControlSelect1">
+                <option>certificate</option>
+                <option>grade_card</option>
+            </select>     <br>       
+            <input name="file_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter fiel name"><br>  
+            <input type="file" name="file"><br>
+            {% if upload_more %}
+            <input type="submit" name="upload_more" value="Upload More">
+            <input type="submit" name="finish" value="Finish">
+            {% else %}
+            <br>  
+            <input type="submit" value="Upload">
+            {% endif %}
+            
+            
+    </form>
+    <br>  
+    <a href="upload_done">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </a>
+    
+</body>

@@ -1,0 +1,14 @@
+TABLES:
+  user_info: "user_info"
+  user_scores: "user_scores"
+  user_login: "user_login"
+  user_files: "user_files"
+
+RDS_CONNECTION_PROPS:
+  uri: 'localhost'
+  port: '5432'
+  database_type: 'postgresql'
+  database_name: 'amigo'
+  schema_name: 'test22'
+  username: 'postgres'
+  password: 'admin'

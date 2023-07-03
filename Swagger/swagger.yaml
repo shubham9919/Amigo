@@ -1,0 +1,310 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/SHUBHAMCHAVANCA_1/Visionbox/1.0.0
+info:
+  description: Swagger of backend APIs for Amigo. 
+  version: "1.0.0"
+  title: Backend APIs for Amigo. 
+  contact:
+    email: shubham@visionbox.ai
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /userinfo:
+    get:
+      summary: search and return the basic user info.
+      description: |
+        pass the userId in pathparameter to get the corresponding userId 
+      parameters:
+        - in: "query"
+          name: emailId
+          description: Pass email Id of user to look for the information
+          required: false
+          schema:
+            type: string
+        - in: "query"
+          name: userId 
+          description: Pass the userId to get the corresponding user info. 
+          schema:
+            type: string
+            format: string
+            example: '234fdsa234'
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/GetUserInfoResponse'
+        '400':
+          description: bad input parameter
+    post:
+      summary: Add basic user details
+      description: Add basic user details.
+      responses:
+        '201':
+          description: User information stored.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserInfoPostResponse'
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: Conflict-User Already Exist. 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfo'
+        description: Add basic user details.
+
+  /grades/{userid}:
+    post:
+      summary: Add grades of exams. 
+      description: Add grades of different exams like GRE, TOFEL.  
+      parameters:
+        - in: "path"
+          name: userid
+          description: Pass userId of user to add grades for user. 
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Success.
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: User not found. 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostGrade'
+        description: Add grades of exams.
+    get:
+      summary: search and return the gardes of user.
+      description: |
+        pass the userId in pathparameter to get the corresponding userId 
+      parameters:
+        - in: "path"
+          name: userid
+          required: true
+          description: Pass the userId to get the corresponding user grade info. 
+          schema:
+            type: string
+            format: string
+            example: '234fdsa234'
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/PostGrade'
+        '400':
+          description: bad input parameter
+  /createuser:
+    post:
+      summary: create a user. 
+      description: create a user using emailId and password.  
+      responses:
+        '201':
+          description: Success.
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostCreateUser'
+        description: create a user.
+  /userfile/{userid}/{category}:
+    post:
+      summary: upload files of grades, marksheets and certificates. 
+      description: create a user using emailId and password.  
+      parameters:
+        - in: "path"
+          name: category
+          description: category of the file.  
+          required: true
+          schema:
+            type: string
+            enum: ['grade_card', 'certificate']
+        - in: "query"
+          name: issuer
+          description: Issuer of the file, may be any state board and university.  
+          required: true
+          schema:
+            type: string
+        - in: "path"
+          name: userid
+          description: userid of the user.  
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Success.
+        '400':
+          description: 'invalid input, object invalid'
+        '404':
+          description: 'User not found'
+      requestBody:
+        content:
+          multipart/form-data::
+            schema:
+              type: string
+              format: binary
+  /userfile/{userid}:
+    get:
+      summary: get all the files uploaded by user in zip format. 
+      description: |
+        pass the userId in pathparameter to get corresponding files 
+      parameters:
+        - in: "path"
+          name: userid
+          required: true
+          description: Pass the userId to get the corresponding user grade info. 
+          schema:
+            type: string
+            format: string
+            example: '234fdsa234'
+      responses:
+        '200':
+          description: Zip file
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: bad input parameter
+components:
+  schemas:
+    UserInfo:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - countryCode
+        - PhoneNumber 
+        - preferredCountry
+      properties:
+        firstName:
+          type: string
+          format: string
+          example: Shubham
+        middleName:
+          type: string
+          example: Sunil
+        lastName:
+          type: string
+          example: Chavan
+        email:
+          type: string
+          format: email
+          example: 'xyz@gmail.com'
+        PhoneNumber:
+          type: number
+          format: number
+          example: 2244322323
+        countryCode:
+          type: string
+          format: string
+          example: '+1'
+        preferredCountry:
+          type: string
+          format: string
+          example: 'Canada'
+    UserInfoPostResponse:
+      type: object
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+          format: string 
+          example: '1234hdbdn11w'
+    GetUserInfoResponse:
+      type: object
+      required:
+        - UserId
+        - firstName
+        - lastName
+        - email
+        - countryCode
+        - PhoneNumber 
+        - preferredCountry
+      properties:
+        firstName:
+          type: string
+          format: string
+          example: Shubham
+        middleName:
+          type: string
+          example: Sunil
+        lastName:
+          type: string
+          example: Chavan
+        email:
+          type: string
+          format: email
+          example: 'xyz@gmail.com'
+        PhoneNumber:
+          type: number
+          format: number
+          example: 2244322323
+        countryCode:
+          type: string
+          format: string
+          example: '+1'
+        preferredCountry:
+          type: string
+          format: string
+          example: 'Canada'
+        userId:
+          type: string
+          format: string
+          example: 'abcd1234567pqrs'
+    PostGrade:
+      type: object
+      properties:
+        gre: 
+          type: number
+          format: number
+          example: 320
+        tofel:
+          type: number
+          format: number
+          example: 90
+        ielts:
+          type: number
+          format: number
+          example: 7
+    PostCreateUser:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: string
+          example: 'example@gmail.com'
+        password: 
+          type: string
+          format: string 
+          example: 'pwd@123'
+        user: 
+          type: string
+          format: string 
+          example: 'eg_user'

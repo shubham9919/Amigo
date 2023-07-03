@@ -1,0 +1,11 @@
+any need to patch the user info. maybe contact info
+
+
+task - 
+    upload file to s3 and then update the database with the name. 
+    flow - 
+        1. file uploaded - with name as key 
+        2. take the name of file and s3 url 
+        3. add the key value in stringified dict format in the daqtabase 
+        
+    updating profile completion status 

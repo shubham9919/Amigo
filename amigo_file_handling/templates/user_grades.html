@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Amigo</title>
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+
+  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+
+  <script crossorigin="anonymous" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script crossorigin="anonymous" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+      <img src="{{url_for('static', filename='amigo_logo.png')}}" width="60" height="60" alt="">
+
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Features</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Pricing</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        <i class="fas fa-user-circle fa-lg"></i>
+        <h4>Hello {{data['name']}}</h4>
+      </span>
+    </div>
+  </nav>
+  <br>
+
+  <form action="{{ url_for('handle_user_grades')}}" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Highest level of education</label>
+      <select name="level_of_education" class="form-control" id="edu_trigger" onreadystatechange="update_edu_options('{{ education_level }}')" onchange="update_edu_options('{{ education_level }}')" required>
+        <option value="higher secondary">Higher Secondary</option>
+        <option value="phd">PhD</option>
+        <option value="masters">Masters</option>
+        <option value="bachelors">Bachelors</option>
+      </select>
+    </div>
+
+
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="exampleFormControlSelect1">Job Experience</label>
+        <select name="exp_years" class="form-control" id="exampleFormControlSelect1">
+          <option>less than one year</option>
+          <option>1 - 3 years</option>
+          <option>3 - 5 years</option>
+          <option>More than 5 years</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="exampleInputEmail1">Field</label>
+        <select name="exp_domain" class="form-control" id="exampleFormControlSelect1">
+          <option>IT Consulting</option>
+          <option>AI/ML</option>
+          <option>Software Development</option>
+        </select>
+      </div>
+
+      <!-- Upload document  -->
+
+    </div>
+
+
+    <!-- </form> -->
+    {% if lang_tests %}
+    {% if lang_test_name %}
+    <h5>Language Test Results:</h5>
+    <ul>
+      {% for lang_test in lang_tests %}
+      <li>{{lang_test_name[loop.index - 1]}} : {{ lang_test }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endif %}
+    {% if add_more %}
+    <h2>Upload More Files:</h2>
+    {% else %}
+    {% endif %}
+
+    <h5> English Language Test</h5>
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="exampleFormControlSelect1">Exam</label>
+        <select name="appeared_lang_exam" class="form-control" id="lang_trigger" onchange="check_lang()">
+          <option>IELTS</option>
+          <option>TOFEL</option>
+          <option value="Not Appeared">Not Appeared</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="exampleInputEmail1">Score</label>
+        <input name="lang_score" class="form-control is-valid" id="ask_score_lang" aria-describedby="emailHelp"
+          placeholder="Enter Score" type="number">
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="exampleInputEmail1">Appeared on</label>
+        <div class="md-form md-outline input-with-post-icon datepicker">
+          <input name="lang_appeared_on" placeholder="Select date" type="date" id="ask_appeared_lang"
+            class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="exampleInputEmail1">Result</label>
+        <input type="file" name="file_lang" id="ask_file_lang_1"><br>
+        {% if add_more %}
+        <input type="submit" name="add_more" value="add_more" id="ask_file_lang_2">
+        <input type="submit" name="finish" value="Finish" id="ask_file_lang_3">
+        {% else %}
+        <br>
+        <input type="submit" value="Upload" id="ask_file_lang_4">
+        {% endif %}
+      </div>
+    </div>
+
+
+    {% if stat_tests %}
+    {% if stat_tests_name %}
+    <h5>Statistic Test Results:</h5>
+    <ul>
+      {% for stat_test in stat_tests %}
+      <li>{{stat_tests_name[loop.index - 1]}} : {{ stat_test }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endif %}
+    {% if add_more_stats %}
+    <h2>Upload More Files:</h2>
+    {% else %}
+    {% endif %}
+
+    <h5> Statistic Test </h5>
+
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="exampleFormControlSelect1">Exam</label>
+        <select name="appeared_stat_exam" class="form-control" id="stat_trigger" onchange="check_stat()">
+          <option>GRE</option>
+          <option>GMAT</option>
+          <option value="Not Appeared">Not Appeared</option>
+
+        </select>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="exampleInputEmail1">Score</label>
+        <input name="stat_score" type="number" class="form-control is-valid" id="ask_score_stat"
+          aria-describedby="emailHelp" placeholder="Enter Score">
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="exampleInputEmail1">Appeared on</label>
+        <div class="md-form md-outline input-with-post-icon datepicker">
+          <input name="stat_appeared_on" placeholder="Select date" type="date" id="ask_Appeared_stat"
+            class="form-control">
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="exampleInputEmail1">Result</label>
+        <input type="file" name="file_stat" id="ask_file_stat_1"><br>
+        {% if add_more_stats %}
+        <input type="submit" name="add_more" value="add_more" id="ask_file_stat_2">
+        <input type="submit" name="finish" value="Finish" id="ask_file_stat_3">
+        {% else %}
+        <br>
+        <input type="submit" value="Upload" id="ask_file_stat_4">
+        {% endif %}
+      </div>
+
+    </div>
+
+    {% if uploaded_files %}
+    {% if uploaded_file_name %}
+    <h5>Uploaded Files:</h5>
+    <ul>
+      {% for file in uploaded_files %}
+      <li>{{uploaded_file_name[loop.index - 1]}} : {{ file }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endif %}
+
+    {% if upload_more %}
+    <h2>Upload More Files:</h2>
+    {% else %}
+    {% endif %}
+    <h5> Education details. </h5>
+
+
+    <!-- <form method="POST" action="/handle_file_upload" enctype="multipart/form-data"> -->
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label for="exampleFormControlSelect1">Education Level</label>
+
+        <select name="education_level" class="form-control" id="education_options">
+          <option>Higher Secondary</option>
+          <option> Masters </option>
+          <option> Bachelors </option>
+          <option> PhD</option>
+
+        </select>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="exampleInputEmail1">GPA</label>
+        <input name="gpa" type="number" class="form-control is-valid" id="exampleInputEmail1"
+          aria-describedby="emailHelp" placeholder="Enter Score">
+      </div>
+
+      <div class="form-group col-md-2">
+        <label for="exampleInputEmail1">Result</label>
+
+        <input type="file" name="file_education"><br>
+        {% if upload_more %}
+        <input type="submit" name="upload_more" value="Upload More">
+        <input type="submit" name="finish" value="Finish">
+        {% else %}
+        <br>
+        <input type="submit" value="Upload">
+      </div>
+
+    </div>
+    </div>
+    {% endif %}
+
+
+  </form>
+  <a href="upload_done" method="POST">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </a>
+
+  <script>
+    function check_stat(event) {
+      op = false
+      if (event && event.type === "DOMContentLoaded") { 
+        op = '{{ stat_selection }}'
+      }
+      let a = document.getElementById('stat_trigger');
+      p = document.getElementById("ask_score_stat")
+      q = document.getElementById("ask_Appeared_stat")
+      r = document.getElementById("ask_file_stat_1")
+      s = document.getElementById("ask_file_stat_2")
+      t = document.getElementById("ask_file_stat_3")
+      u = document.getElementById("ask_file_stat_4")
+      if (op == "True"){
+        a.value = 'Not Appeared'
+      }
+      if (a.value == 'Not Appeared') {
+        p.setAttribute("disabled", "disabled");
+        q.setAttribute("disabled", "disabled");
+        r.setAttribute("disabled", "disabled");
+        u.setAttribute("disabled", "disabled");
+      } else {
+        p.removeAttribute("disabled");
+        q.removeAttribute("disabled");
+        r.removeAttribute("disabled");
+        u.removeAttribute("disabled");
+      }
+    }
+
+
+    function check_lang(event) {
+      op = false
+      if (event && event.type === "DOMContentLoaded") { 
+        op = '{{ lang_selection }}'
+      }
+      let a = document.getElementById('lang_trigger');
+      console.log(op)
+      p = document.getElementById("ask_score_lang")
+      q = document.getElementById("ask_appeared_lang")
+      r = document.getElementById("ask_file_lang_1")
+      u = document.getElementById("ask_file_lang_4")
+      if (op == "True"){
+        a.value = 'Not Appeared'
+      }
+      if (a.value == 'Not Appeared') {
+        p.setAttribute("disabled", "disabled");
+        q.setAttribute("disabled", "disabled");
+        r.setAttribute("disabled", "disabled");
+        u.setAttribute("disabled", "disabled");
+      } else {
+        p.removeAttribute("disabled");
+        q.removeAttribute("disabled");
+        r.removeAttribute("disabled");
+        u.removeAttribute("disabled");
+      }
+    }
+
+    function update_edu_options(educ = undefined) {
+      var educ =  '{{education_level}}'
+      console.log(educ)
+      let a = document.getElementById('edu_trigger');
+      console.log(a.value)
+      let b = document.getElementById('education_options');
+      b.innerHTML = "";
+      edu  = educ || a.value
+      if (edu == 'phd'){
+        b.options[ b.options.length] = new Option('Higher Secondary', undefined);
+        b.options[ b.options.length] = new Option('Bachelors', undefined);
+        b.options[ b.options.length] = new Option('Masters', undefined);
+        b.options[ b.options.length] = new Option('PhD', undefined);
+      }
+      if (edu == 'masters'){
+        b.options[ b.options.length] = new Option('Higher Secondary', undefined);
+        b.options[ b.options.length] = new Option('Bachelors', undefined);
+        b.options[ b.options.length] = new Option('Masters', undefined);
+      }
+      if (edu == 'bachelors'){
+        b.options[ b.options.length] = new Option('Higher Secondary', undefined);
+        b.options[ b.options.length] = new Option('Bachelors', undefined);
+      }
+      if (edu == 'higher secondary'){
+        b.options[ b.options.length] = new Option('Higher Secondary', undefined);
+      }
+
+    }
+
+
+    document.addEventListener("DOMContentLoaded", update_edu_options);
+    document.addEventListener("DOMContentLoaded", check_lang);
+    document.addEventListener("DOMContentLoaded", check_stat);
+
+
+  </script>
+</body>
