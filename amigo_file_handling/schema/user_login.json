@@ -1,0 +1,15 @@
+{
+    "type": "object",
+    "properties": {
+        "email_id": {
+            "type": "string"
+        },
+        "password": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "email_id",
+        "password"
+    ]
+}
