@@ -1,5 +1,6 @@
 from sqlalchemy import Table, exc
 from sqlalchemy.dialects.postgresql import insert
+from typing import List
 
 from amigo_dao.services.dao_services import DaoServices
 from amigo_dao.amigo_model_creation.sql_models import user_scores
@@ -7,7 +8,7 @@ from amigo_dao.dataclasse_models.request import AddUserGradesDataClass
 from amigo_error_handling.errors import InternalServerError, ConflictError
 
 class AddUserGrades(DaoServices): 
-    def add_user_grades(self, grades: list[AddUserGradesDataClass]):
+    def add_user_grades(self, grades: List[AddUserGradesDataClass]):
         try:
             with self.engine().begin() as connection:
                 user_scores_table = Table(

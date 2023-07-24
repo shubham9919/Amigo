@@ -1,6 +1,7 @@
 import json
 from sqlalchemy import Table, exc
 from sqlalchemy.dialects.postgresql import insert
+from typing import List
 
 from amigo_dao.services.dao_services import DaoServices
 from amigo_dao.amigo_model_creation.sql_models import user_files
@@ -10,7 +11,7 @@ from amigo_error_handling.errors import InternalServerError, ConflictError
 
 class AddUserFiles(DaoServices): 
 
-    def add_user_files(self, user_data: list[AddUserFilesDataClass]): 
+    def add_user_files(self, user_data: List[AddUserFilesDataClass]): 
         try:
             with self.engine().begin() as connection:
                 user_files_table = Table(
