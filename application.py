@@ -463,4 +463,4 @@ def logout():
     return render_template("user_login.html")
 
 if __name__ == "__main__":
-    app.run(debug=True, ssl_context='adhoc')
+    app.run(debug=True)
