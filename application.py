@@ -66,21 +66,21 @@ gpa_data_array = []
 
 
 UPLOAD_FOLDER = 'static/upload'
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = "your_secret_key"
-Bootstrap(app)
+application = Flask(__name__)
+application.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+application.secret_key = "your_secret_key"
+Bootstrap(application)
 # User session management setup
 # https://flask-login.readthedocs.io/en/latest
 login_manager = LoginManager()
-login_manager.init_app(app)
+login_manager.init_app(application)
 
 
 # # OAuth 2 client setup
 # client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
-@app.errorhandler(CustomError)
-@app.errorhandler(NotFoundError)
+@application.errorhandler(CustomError)
+@application.errorhandler(NotFoundError)
 def handle_custom_error(error):
     return handle_error(error)
 
@@ -92,12 +92,12 @@ def load_user(user_id):
 
 
 
-@app.route('/', methods=['GET', 'POST'])
+@application.route('/', methods=['GET', 'POST'])
 def upload_file():
     return render_template("user_login.html")
 
 @login_required
-@app.route('/user_info', methods=['POST', 'GET'])
+@application.route('/user_info', methods=['POST', 'GET'])
 def handle_data():
     try:
         if current_user.is_authenticated:
@@ -150,7 +150,7 @@ def handle_data():
         raise e
 
 @login_required
-@app.route('/user_home', methods=['POST', 'GET'])
+@application.route('/user_home', methods=['POST', 'GET'])
 def user_landing():
     print(current_user.id)
     if current_user.is_authenticated:
@@ -159,7 +159,7 @@ def user_landing():
         return render_template("user_login.html")
 
 @login_required
-@app.route('/user_grades', methods=['POST', 'GET'])
+@application.route('/user_grades', methods=['POST', 'GET'])
 def user_grades():
     if current_user.is_authenticated:
         return render_template("user_grades.html", data={'name': session['user_name']})
@@ -167,7 +167,7 @@ def user_grades():
         return render_template("user_login.html")
     
 @login_required
-@app.route('/handle_user_grades', methods=['POST'])
+@application.route('/handle_user_grades', methods=['POST'])
 def handle_user_grades():
     try:
         user_info_data['field_experience'] = request.form['exp_domain']
@@ -300,12 +300,12 @@ def handle_user_grades():
         raise e 
 
 login_required
-@app.route('/file_upload', methods=['POST', 'GET'])
+@application.route('/file_upload', methods=['POST', 'GET'])
 def file_upload():
     return render_template('file_upload.html')
 
 login_required
-@app.route('/upload_done', methods=['GET', 'POST'])
+@application.route('/upload_done', methods=['GET', 'POST'])
 def upload_done():
     try:
         file = []
@@ -356,13 +356,13 @@ def upload_done():
 
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@application.route("/login", methods=['GET', 'POST'])
 def login():
     # raise NotFoundError("Custom NOt Found occurred", 404)
     return render_template('user_login.html')
 
 login_required
-@app.route("/handle_login_data", methods=['GET', 'POST'])
+@application.route("/handle_login_data", methods=['GET', 'POST'])
 def handle_login_data():
     try:
         json_body = AmigoCommonServices().get_json_body(request.form)
@@ -389,7 +389,7 @@ def handle_login_data():
 # def get_google_provider_config():
 #     return requests.get(GOOGLE_DISCOVERY_URL).json()
 
-@app.route("/login_google", methods=['GET', 'POST'])
+@application.route("/login_google", methods=['GET', 'POST'])
 def google_login():
     try:
         identity_provider = 'google'
@@ -400,7 +400,7 @@ def google_login():
         raise e 
 
 
-@app.route("/login_google/callback")
+@application.route("/login_google/callback")
 def callback():
     try:
         userinfo_response = GoogleOIDC().process_auth_google()
@@ -455,7 +455,7 @@ def get_scores_data(data, exam_type):
         raise e
 
 
-@app.route("/logout", methods=['GET', 'POST'])
+@application.route("/logout", methods=['GET', 'POST'])
 @login_required
 def logout():
     logout_user()
@@ -463,4 +463,4 @@ def logout():
     return render_template("user_login.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    application.run(debug=True)
