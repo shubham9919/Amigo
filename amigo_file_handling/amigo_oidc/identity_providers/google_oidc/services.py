@@ -4,12 +4,12 @@ from oauthlib.oauth2 import WebApplicationClient
 from flask import Flask, flash, request, redirect, url_for
 from amigo_error_handling.errors import ServiceUnavailableError, BadRequestError
 import json
-
+    
 
 class GoogleOIDC:
     def __init__(self):
-        self.GOOGLE_CLIENT_ID = ""
-        self.GOOGLE_CLIENT_SECRET = ""
+        self.GOOGLE_CLIENT_ID = "1003011779946-ldergf50m2a2t49cvuf8tige2t0qmie6.apps.googleusercontent.com"
+        self.GOOGLE_CLIENT_SECRET = "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"
         self.GOOGLE_DISCOVERY_URL = (
             "https://accounts.google.com/.well-known/openid-configuration"
         )
